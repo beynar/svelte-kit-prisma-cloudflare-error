@@ -34,6 +34,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return prisma;
 	};
 
+	console.log(event.platform);
+
 	const prisma = await createPrisma(event.platform?.env.HYPERDRIVE?.connectionString);
 	// dev || !event.platform?.env.HYPERDRIVE
 	// 	? await import('./prismaDev').then((m) => m.createPrismaDev(PRIVATE_DATABASE_URL))
