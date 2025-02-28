@@ -46,7 +46,6 @@
 	},
 	"dependencies": {
 		"@prisma/client": "^6.4.1",
-		"pg": "^8.13.3",
 		"prisma": "^6.4.1"
 	}
 }
