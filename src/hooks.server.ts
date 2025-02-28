@@ -33,22 +33,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 		return prisma;
 	};
-	const createPrismaDev = async (connectionString: string) => {
-		// @ts-ignore
-		const { default: PG } = await import('pg');
-		const { PrismaPg } = await import('@prisma/adapter-pg');
-		const pool = new PG.Pool({
-			connectionString
-		});
-		const adapter = new PrismaPg(pool);
-		return new PrismaClient({
-			adapter
-		} as P.PrismaClientOptions);
-	};
 
 	const prisma =
 		dev || !event.platform?.env.HYPERDRIVE
-			? await createPrismaDev(PRIVATE_DATABASE_URL)
+			? await import('./prismaDev').then((m) => m.createPrismaDev(PRIVATE_DATABASE_URL))
 			: await createPrisma(event.platform?.env.HYPERDRIVE?.connectionString);
 	Object.assign(event.locals, { prisma });
 

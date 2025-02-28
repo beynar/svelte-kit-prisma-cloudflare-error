@@ -4,5 +4,6 @@ export const load = async ({ locals }) => {
 			author: true
 		}
 	});
+
 	return { posts };
 };
