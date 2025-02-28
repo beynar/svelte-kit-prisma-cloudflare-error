@@ -8,10 +8,7 @@ import { PRIVATE_DATABASE_URL } from '$env/static/private';
 export const handle: Handle = async ({ event, resolve }) => {
 	const createPrisma = (connectionString: string, cb?: (end: () => Promise<void>) => void) => {
 		const pool = new Pool({
-			connectionString,
-			max: 1,
-			allowExitOnIdle: true,
-			idleTimeoutMillis: 0
+			connectionString
 		});
 		const adapter = new PrismaPg(pool);
 		const prisma = new PrismaClient({
@@ -20,13 +17,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return prisma;
 	};
 
-	console.log(event.platform);
-
 	const prisma = await createPrisma(event.platform?.env.HYPERDRIVE?.connectionString);
 
-	// dev || !event.platform?.env.HYPERDRIVE
-	// 	? await import('./prismaDev').then((m) => m.createPrismaDev(PRIVATE_DATABASE_URL))
-	// 	:
+	// const prisma =
+	// 	dev || !event.platform?.env.HYPERDRIVE
+	// 		? await import('./prismaDev').then((m) => m.createPrismaDev(PRIVATE_DATABASE_URL))
+	// 		: await createPrisma(event.platform?.env.HYPERDRIVE?.connectionString);
 	Object.assign(event.locals, { prisma });
 
 	return resolve(event);

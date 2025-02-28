@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	let { data } = $props();
 
 	const nextPost = $derived(data.nextPost);
@@ -40,8 +42,11 @@
 		{#if nextPost}
 			<div class="mt-12 border-t border-gray-200 pt-8">
 				<h3 class="mb-4 text-xl font-semibold text-gray-800">Continue Reading</h3>
-				<a
-					href="/posts/{nextPost.id}"
+				<button
+					onclick={() => {
+						goto(`/posts/${nextPost.id}`);
+						invalidate('post');
+					}}
 					class="flex items-center justify-between rounded-lg border border-gray-200 p-4 transition hover:bg-gray-50"
 				>
 					<div>
@@ -51,7 +56,7 @@
 						{/if}
 					</div>
 					<span class="text-blue-600">→</span>
-				</a>
+				</button>
 			</div>
 		{/if}
 
@@ -61,7 +66,13 @@
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 				{#each threeRandomPosts as post}
 					{#if post && post.id !== data.post.id}
-						<a href="/posts/{post.id}" class="group">
+						<button
+							onclick={() => {
+								goto(`/posts/${post.id}`);
+								invalidate('post');
+							}}
+							class="group"
+						>
 							<div
 								class="overflow-hidden rounded-lg border border-gray-200 transition group-hover:shadow-md"
 							>
@@ -80,7 +91,7 @@
 									</div>
 								</div>
 							</div>
-						</a>
+						</button>
 					{/if}
 				{/each}
 			</div>
