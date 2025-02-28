@@ -17,26 +17,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const prisma = new PrismaClient({
 			adapter
 		} as P.PrismaClientOptions);
-
-		event.platform?.context.waitUntil(
-			new Promise((resolve) => {
-				console.log('wait until');
-				try {
-					pool.end().then(() => {
-						resolve(true);
-					});
-				} catch (error) {
-					resolve(true);
-				}
-			})
-		);
-
 		return prisma;
 	};
 
 	console.log(event.platform);
 
 	const prisma = await createPrisma(event.platform?.env.HYPERDRIVE?.connectionString);
+
 	// dev || !event.platform?.env.HYPERDRIVE
 	// 	? await import('./prismaDev').then((m) => m.createPrismaDev(PRIVATE_DATABASE_URL))
 	// 	:
