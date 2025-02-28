@@ -34,10 +34,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return prisma;
 	};
 
-	const prisma =
-		dev || !event.platform?.env.HYPERDRIVE
-			? await import('./prismaDev').then((m) => m.createPrismaDev(PRIVATE_DATABASE_URL))
-			: await createPrisma(event.platform?.env.HYPERDRIVE?.connectionString);
+	const prisma = await createPrisma(event.platform?.env.HYPERDRIVE?.connectionString);
+	// dev || !event.platform?.env.HYPERDRIVE
+	// 	? await import('./prismaDev').then((m) => m.createPrismaDev(PRIVATE_DATABASE_URL))
+	// 	:
 	Object.assign(event.locals, { prisma });
 
 	return resolve(event);
